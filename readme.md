@@ -1,3 +1,5 @@
+`video: https://www.youtube.com/watch?v=HbAAC3-FI64&list=PL48j-kM_d_61tpcddJ-_s762vvNGP1zAw`
+
 # Azure Virtual Desktop Bicep
 This guide provides simple instructions on how to use the Bicep modules to deploy an Azure Virtual Desktop (AVD) environment. The main file structures the deployment process, referencing different modules for specific resources.
 
