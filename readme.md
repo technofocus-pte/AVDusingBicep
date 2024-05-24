@@ -59,7 +59,6 @@ Monitor Deployment: Check the Azure Portal to monitor the deployment status and 
 
 By following these steps and using the provided modules, you can set up a comprehensive Azure Virtual Desktop environment tailored to your requirements.
 
-
 # Cyber Career Academy Repository
 Welcome to the Cyber Career Academy repository!
 
