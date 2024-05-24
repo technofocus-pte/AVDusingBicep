@@ -1,6 +1,6 @@
 # Watch our video courses and AVD companion guide
 
-(![YT](https://github.com/Cyber-Career-Academy/Repository/assets/44751449/ce410da0-f7f4-4b8f-afe8-73f1f56dd14a)](https://www.youtube.com/watch?v=HbAAC3-FI64&list=PL48j-kM_d_61tpcddJ-_s762vvNGP1zAw "AVD Playlist")
+[![YT](https://github.com/Cyber-Career-Academy/Repository/assets/44751449/ce410da0-f7f4-4b8f-afe8-73f1f56dd14a)](https://www.youtube.com/watch?v=HbAAC3-FI64&list=PL48j-kM_d_61tpcddJ-_s762vvNGP1zAw "AVD Playlist")
 
 # Azure Virtual Desktop Bicep
 This guide provides simple instructions on how to use the Bicep modules to deploy an Azure Virtual Desktop (AVD) environment. The main file structures the deployment process, referencing different modules for specific resources.
