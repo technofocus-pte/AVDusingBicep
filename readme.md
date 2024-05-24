@@ -62,6 +62,9 @@ By following these steps and using the provided modules, you can set up a compre
 # Cyber Career Academy Repository
 Welcome to the Cyber Career Academy repository!
 
+# Visit our YouTube Channel
+[CyberCareerAcademy](https://www.youtube.com/@CyberCareerAcademy)
+
 # Visit Us
 Explore more about Cyber Career Academy at our official website:
 [Cyber Career Academy](https://www.cybercareeracademy.tech/)
