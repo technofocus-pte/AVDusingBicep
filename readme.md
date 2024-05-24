@@ -68,7 +68,7 @@ Explore more about Cyber Career Academy at our official website:
 
 Repository
 Find all our Azure Lab resources and templates in our GitHub repository:
-[AzureLabs Repository] (https://github.com/Cyber-Career-Academy/Repository)
+[Azure Labs Repository](https://github.com/Cyber-Career-Academy/Repository)
 
 # Community
 Join our active community on Discord:
