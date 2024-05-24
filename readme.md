@@ -63,13 +63,14 @@ By following these steps and using the provided modules, you can set up a compre
 Welcome to the Cyber Career Academy repository!
 
 # Visit our YouTube Channel
+Watch our cyber security or AVD playlist for additional resources.
 [CyberCareerAcademy](https://www.youtube.com/@CyberCareerAcademy)
 
 # Visit Us
 Explore more about Cyber Career Academy at our official website:
 [Cyber Career Academy](https://www.cybercareeracademy.tech/)
 
-Repository
+# Repository
 Find all our Azure Lab resources and templates in our GitHub repository:
 [Azure Labs Repository](https://github.com/Cyber-Career-Academy/Repository)
 
@@ -80,6 +81,9 @@ Join our active community on Discord:
 # Social Media
 Stay updated with our latest activities and news on Instagram:
 [Instagram](https://www.instagram.com/cyber_career_academy/)
+
+Follow us on Twitter
+[Twitter/X](https://twitter.com/CyberCareerAcad)
 
 # Overview
 Currently this repo has Bicep Modules on how to deploy Azure Virtual Desktop
