@@ -10,7 +10,7 @@ param hostpoolToken string
 
 param aadJoin bool = true
 
-var dscURL = 'https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_1.0.02705.330.zip'
+var dscURL = 'https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_01-20-2022.zip'
 
 resource existingVirtualMachine 'Microsoft.Compute/virtualMachines@2023-09-01' existing = {
   name: sessionHostName

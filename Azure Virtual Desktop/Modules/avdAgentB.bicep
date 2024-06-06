@@ -4,7 +4,7 @@ param tags object
 
 param sessionHostName string
 
-param hostpoolName string
+param HostPoolName string
 
 param SessionHostConfigurationVersion string = ''
 
@@ -32,7 +32,7 @@ resource rdshPrefix_vmInitialNumber_Microsoft_PowerShell_DSC 'Microsoft.Compute/
         modulesUrl: artifactsLocation
         configurationFunction: 'Configuration.ps1\\AddSessionHost'
         properties: {
-          hostPoolName: hostpoolName
+          hostPoolName: HostPoolName
           registrationInfoTokenCredential: {
             UserName: 'PLACEHOLDER_DO_NOT_USE'
             Password: 'PrivateSettingsRef:RegistrationInfoToken'

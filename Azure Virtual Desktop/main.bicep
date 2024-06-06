@@ -105,11 +105,7 @@ module workspace 'Modules/workspace.bicep' = {
   }
 }
 
-module virtualMachine 'Modules/virtualMachine.bicep' = {
-  dependsOn: [
-    RG
-    virtualNetwork
-  ]
+module vm 'Modules/vmModule.bicep' = {
   name: '${vmName}-${date}'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -122,33 +118,11 @@ module virtualMachine 'Modules/virtualMachine.bicep' = {
     vmSize: vmSize
     virtualNetworkName: virtualNetworkName
     subnetName: subnets[0].name
-  }
-}
-
-module aadJoin 'Modules/aadJoin.bicep' = {
-  name: 'aadJoin-${vmName}-${date}'
-  scope: resourceGroup(resourceGroupName)
-  params: {
-    location: location
-    tags: tags
-    vmName: virtualMachine.outputs.virtualMachineName
-  }
-}
-
-module avdAgent 'Modules/avdAgentB.bicep' = {
-  name: 'AVDAGENT-${vmName}-${date}'
-  dependsOn: [
-    aadJoin
-  ]
-  scope: resourceGroup(resourceGroupName)
-  params: {
-    location: location
-    tags: tags
     hostpoolToken: hostpool.outputs.hostpoolToken
     hostpoolName: hostpool.outputs.hostpoolName
-    sessionHostName: virtualMachine.outputs.virtualMachineName
   }
 }
+
 
 module permissions 'Modules/azureVirtualDesktopPermissions.bicep' = {
   dependsOn: [

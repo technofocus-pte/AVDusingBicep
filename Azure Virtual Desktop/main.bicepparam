@@ -39,7 +39,7 @@ param OSVersion = 'win10-22h2-avd'
 
 param vmSize = 'Standard_B4ms'
 
-param vmName = 'vm-avd-prd-01e'
+param vmName = 'vm-avd-prd-01h'
 
 param securityType = 'Standard'
 
