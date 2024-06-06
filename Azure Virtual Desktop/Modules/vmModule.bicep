@@ -223,7 +223,7 @@ resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' =  {
     }
   }
 
-resource rdshPrefix_vmInitialNumber 'Microsoft.Compute/virtualMachines@2022-11-01' = {
+resource virtualMachine'Microsoft.Compute/virtualMachines@2022-11-01' = {
     name: vmName
     location: location
     extendedLocation: (empty(extendedLocation) ? null : extendedLocation)
@@ -275,7 +275,7 @@ resource rdshPrefix_vmInitialNumber 'Microsoft.Compute/virtualMachines@2022-11-0
     }
   }
 
-resource rdshPrefix_vmInitialNumber_GuestAttestation 'Microsoft.Compute/virtualMachines/extensions@2018-10-01' = if (integrityMonitoring) {
+resource guestAttestation 'Microsoft.Compute/virtualMachines/extensions@2018-10-01' = if (integrityMonitoring) {
     name: '${vmName}/GuestAttestation'
     location: location
     properties: {
@@ -299,12 +299,12 @@ resource rdshPrefix_vmInitialNumber_GuestAttestation 'Microsoft.Compute/virtualM
       }
     }
     dependsOn: [
-      rdshPrefix_vmInitialNumber
+      virtualMachine
     ]
   }
 
 
-resource rdshPrefix_vmInitialNumber_Microsoft_PowerShell_DSC 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
+resource AVDAgent 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
     name: '${vmName}/Microsoft.PowerShell.DSC'
     location: location
     properties: {
@@ -335,11 +335,11 @@ resource rdshPrefix_vmInitialNumber_Microsoft_PowerShell_DSC 'Microsoft.Compute/
       }
     }
     dependsOn: [
-      rdshPrefix_vmInitialNumber_GuestAttestation
+      guestAttestation
     ]
   }
 
-resource rdshPrefix_vmInitialNumber_AADLoginForWindows 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = 
+resource aadLoginForWindows 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = 
 if (aadJoin && (contains(systemData, 'aadJoinPreview')
     ? (!systemData.aadJoinPreview)
     : bool('true'))) {
@@ -357,12 +357,12 @@ if (aadJoin && (contains(systemData, 'aadJoinPreview')
         : json('null'))
     }
     dependsOn: [
-      rdshPrefix_vmInitialNumber_Microsoft_PowerShell_DSC
+      AVDAgent
     ]
   }
 
 
-resource rdshPrefix_vmInitialNumber_Microsoft_Compute_CustomScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2021-03-01' = if (!empty(customConfigurationScriptUrl)) {
+resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2021-03-01' = if (!empty(customConfigurationScriptUrl)) {
     name: '${vmName}/Microsoft.Compute.CustomScriptExtension'
     location: location
     properties: {
@@ -378,8 +378,8 @@ resource rdshPrefix_vmInitialNumber_Microsoft_Compute_CustomScriptExtension 'Mic
       }
     }
     dependsOn: [
-      rdshPrefix_vmInitialNumber_Microsoft_PowerShell_DSC
-      rdshPrefix_vmInitialNumber_AADLoginForWindows
+      AVDAgent
+      aadLoginForWindows
     ]
   }
 
