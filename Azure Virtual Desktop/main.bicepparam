@@ -7,19 +7,19 @@ param tags = {
 
 param location = 'WestUs3'
 
-param resourceGroupName = 'rg-avd-prd-wus3'
+param resourceGroupName = 'rg-avdlab-prd-wus3'
 
 //hostpool Params
-param hostPoolName = 'hp-avd-prd-wus3'
+param hostPoolName = 'hp-avdlab-prd-wus3'
 
 // applicationGroup Params
-param applicationGroupName = 'ag-avd-prd-wus3'
+param applicationGroupName = 'ag-avdlab-prd-wus3'
 
 //Workspace Params 
-param workspaceName = 'ws-avd-prd-wus3'
+param workspaceName = 'ws-avdlab-prd-wus3'
 
 // Virtual Network Parameters
-param virtualNetworkName = 'vnet-avd-prd-wus3'
+param virtualNetworkName = 'vnet-avdlab-prd-wus3'
 
 param vnetCIDR = '10.0.0.0/20'
 
@@ -33,12 +33,15 @@ param subnets = [
 // Virtual Machine params
 param adminUsername = 'azadmin'
 
-param adminPassword = '123!@#ABCabc'
+param adminPassword  = '123!@#ABCabc3'
 
-param OSVersion = '2022-datacenter-azure-edition'
+param OSVersion = 'win10-22h2-avd'
 
 param vmSize = 'Standard_B4ms'
 
-param vmName = 'vm-avd-prd-01'
+param vmName = 'vm-avd-prd-01e'
 
 param securityType = 'Standard'
+
+//Permissions Params
+param principalId = 'b38b577a-000a-4db2-85de-b30bf73a5fb2'

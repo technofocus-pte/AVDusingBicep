@@ -10,13 +10,13 @@ resource existingVirtualMachine 'Microsoft.Compute/virtualMachines@2023-09-01' e
 
 resource aadJoin 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
   parent: existingVirtualMachine
-  name: 'aadJoin'
+  name: 'AADLoginForWindows'
   location: location
   tags: tags
   properties: {
     publisher: 'Microsoft.Azure.ActiveDirectory'
     type: 'AADLoginForWindows'
-    typeHandlerVersion: '1.0'
+    typeHandlerVersion: '2.0'
     autoUpgradeMinorVersion: true
   }
 }

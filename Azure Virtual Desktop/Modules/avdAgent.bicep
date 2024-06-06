@@ -10,17 +10,17 @@ param hostpoolToken string
 
 param aadJoin bool = true
 
-var dscURL = 'https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_01-19-2023.zip'
+var dscURL = 'https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_1.0.02705.330.zip'
 
 resource existingVirtualMachine 'Microsoft.Compute/virtualMachines@2023-09-01' existing = {
   name: sessionHostName
 }
 
-resource sessionHostAvdAgent 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
+resource sessionHostAVDAgent 'Microsoft.Compute/virtualMachines/extensions@2020-06-01' = {
   parent: existingVirtualMachine
-  name: 'sessionHostAvdAgent'
-  tags: tags
+  name: 'sessionHostAVDAgent'
   location: location
+  tags: tags
   properties: {
     publisher: 'Microsoft.Powershell'
     type: 'DSC'

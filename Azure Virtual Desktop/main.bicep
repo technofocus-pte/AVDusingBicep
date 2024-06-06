@@ -36,13 +36,15 @@ param adminUsername string = 'azadmin'
 
 param adminPassword string = '123!@#ABCabc'
 
-param OSVersion string = '2022-datacenter-azure-edition'
+param OSVersion string = 'win10-22h2-avd'
 
 param vmSize string = 'Standard_B4ms'
 
 param vmName string = 'vm-avd-prd-01'
 
 param securityType string = 'Standard'
+
+param principalId string = 'principalId'
 
 module RG 'Modules/resourceGroup.bicep' = {
   name: '${resourceGroupName}-${date}'
@@ -114,7 +116,7 @@ module virtualMachine 'Modules/virtualMachine.bicep' = {
     location: location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    OSVersion: OSVersion
+    sku: OSVersion
     securityType: securityType
     vmName: vmName
     vmSize: vmSize
@@ -133,7 +135,7 @@ module aadJoin 'Modules/aadJoin.bicep' = {
   }
 }
 
-module avdAgent 'Modules/avdAgent.bicep' = {
+module avdAgent 'Modules/avdAgentB.bicep' = {
   name: 'AVDAGENT-${vmName}-${date}'
   dependsOn: [
     aadJoin
@@ -143,7 +145,7 @@ module avdAgent 'Modules/avdAgent.bicep' = {
     location: location
     tags: tags
     hostpoolToken: hostpool.outputs.hostpoolToken
-    HostPoolName: hostpool.outputs.hostpoolName
+    hostpoolName: hostpool.outputs.hostpoolName
     sessionHostName: virtualMachine.outputs.virtualMachineName
   }
 }
@@ -154,7 +156,7 @@ module permissions 'Modules/azureVirtualDesktopPermissions.bicep' = {
   ]
   name: 'AVDPermissions-${date}'
   params: {
-    principalId: '728d27c2-46a8-494a-ad35-0ac2836f7ae8'
+    principalId: principalId
     principalType: 'User'
   }
 }
