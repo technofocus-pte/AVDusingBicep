@@ -33,13 +33,13 @@ param subnets = [
 // Virtual Machine params
 param adminUsername = 'azadmin'
 
-param adminPassword  = '123!@#ABCabc3'
+param adminPassword  = '123!@#ABCabc'
 
 param OSVersion = 'win10-22h2-avd'
 
 param vmSize = 'Standard_B4ms'
 
-param vmName = 'vm-avd-prd-01h'
+param vmName = 'vm-avd-prd-02'
 
 param securityType = 'Standard'
 
