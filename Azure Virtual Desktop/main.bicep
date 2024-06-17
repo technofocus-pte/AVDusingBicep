@@ -22,11 +22,15 @@ param workspaceName string = 'ws-avd-prd-wus3'
 // Virtual Network Parameters
 param virtualNetworkName string = 'vnet-avd-prd-wus3'
 
-param vnetCIDR string = '10.0.0.0/20'
+param vnetCIDR string = '10.0.0.0/16'
 
 param subnets array = [
   {
     name: 'subnet1'
+    addressPrefix: '10.0.0.0/24'
+  }
+  {
+    name: 'subnet2'
     addressPrefix: '10.0.1.0/24'
   }
 ]

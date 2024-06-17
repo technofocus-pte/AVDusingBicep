@@ -81,10 +81,8 @@ param createNetworkSecurityGroup bool = false
 @description('The resource id of an existing network security group')
 param networkSecurityGroupId string = ''
 
-
 @description('The tags to be assigned to the network interfaces')
 param networkInterfaceTags object = {}
-
 
 @description('The tags to be assigned to the virtual machines')
 param virtualMachineTags object = {}
@@ -100,6 +98,8 @@ param hostpoolName string
 
 @description('Domain to join')
 param domain string = ''
+
+param avdAgent bool = false
 
 @description('IMPORTANT: You can use this parameter for the test purpose only as AAD Join is public preview. True if AAD Join, false if AD join')
 param aadJoin bool = true
@@ -148,26 +148,18 @@ param integrityMonitoring bool = false
 ])
 param managedDiskSecurityEncryptionType string = 'VMGuestStateOnly'
 
-var emptyArray = []
-var domain_var = ((domain == '') ? last(split(adminUsername, '@')) : domain)
 var newNsgName = '${rdshPrefix}nsg-${_guidValue}'
-var newNsgDeploymentName = 'NSG-linkedTemplate-${_guidValue}'
 var nsgId = (createNetworkSecurityGroup
   ? resourceId('Microsoft.Network/networkSecurityGroups', newNsgName)
   : networkSecurityGroupId)
 var vmAvailabilitySetResourceId = {
   id: resourceId('Microsoft.Compute/availabilitySets/', availabilitySetName)
 }
-var planInfoEmpty = (empty(sku) || empty(publisher) || empty(offer))
-var marketplacePlan = {
-  name: sku
-  publisher: publisher
-  product: offer
-}
-var vmPlan = ((planInfoEmpty || (!vmGalleryImageHasPlan)) ? json('null') : marketplacePlan)
+
 var vmIdentityType = (aadJoin
   ? ((!empty(userAssignedIdentity)) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned')
   : ((!empty(userAssignedIdentity)) ? 'UserAssigned' : 'None'))
+
 var vmIdentityTypeProperty = {
   type: vmIdentityType
 }
@@ -176,6 +168,7 @@ var vmUserAssignedIdentityProperty = {
     '${resourceId('Microsoft.ManagedIdentity/userAssignedIdentities/',userAssignedIdentity)}': {}
   }
 }
+
 var vmIdentity = ((!empty(userAssignedIdentity))
   ? union(vmIdentityTypeProperty, vmUserAssignedIdentityProperty)
   : vmIdentityTypeProperty)
@@ -190,196 +183,183 @@ var securityProfile = {
 var managedDiskSecurityProfile = {
   securityEncryptionType: managedDiskSecurityEncryptionType
 }
-var countOfSelectedAZ = length(availabilityZones)
-var loadBalancerBackendPoolIdArray = [
-  {
-    id: loadBalancerBackendPoolId
-  }
-]
-var loadBalancerBackendAddressPools = (empty(loadBalancerBackendPoolId) ? json('null') : loadBalancerBackendPoolIdArray)
 
-
-
-resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' =  {
-    name: '${vmName}-nic'
-    location: location
-    extendedLocation: (empty(extendedLocation) ? null : extendedLocation)
-    tags: networkInterfaceTags
-    properties: {
-      ipConfigurations: [
-        {
-          name: 'ipconfig'
-          properties: {
-            privateIPAllocationMethod: 'Dynamic'
-            subnet: {
-              id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
-            }
-            loadBalancerBackendAddressPools: loadBalancerBackendAddressPools
+resource vmNic 'Microsoft.Network/networkInterfaces@2022-11-01' = {
+  name: '${vmName}-nic'
+  location: location
+  extendedLocation: (empty(extendedLocation) ? null : extendedLocation)
+  tags: networkInterfaceTags
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'ipconfig'
+        properties: {
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
           }
+        }
+      }
+    ]
+    enableAcceleratedNetworking: enableAcceleratedNetworking
+    networkSecurityGroup: (empty(networkSecurityGroupId) ? null : json('{"id": "${nsgId}"}'))
+  }
+}
+
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-11-01' = {
+  name: vmName
+  location: location
+  extendedLocation: (empty(extendedLocation) ? null : extendedLocation)
+  tags: virtualMachineTags
+  identity: vmIdentity
+  properties: {
+    hardwareProfile: {
+      vmSize: vmSize
+    }
+    availabilitySet: ((availabilityOption == 'AvailabilitySet') ? vmAvailabilitySetResourceId : null)
+    osProfile: {
+      computerName: vmName
+      adminUsername: adminUsername
+      adminPassword: adminPassword
+    }
+    securityProfile: (((securityType == 'TrustedLaunch') || (securityType == 'ConfidentialVM')) ? securityProfile : null)
+    storageProfile: {
+      imageReference: {
+        publisher: publisher
+        offer: offer
+        sku: sku
+        version: (empty(vmGalleryImageVersion) ? 'latest' : vmGalleryImageVersion)
+      }
+      osDisk: {
+        createOption: 'FromImage'
+        diskSizeGB: ((rdshVmDiskSizeGB == 0) ? null : rdshVmDiskSizeGB)
+        managedDisk: {
+          storageAccountType: storageAccountType
+          securityProfile: ((securityType == 'ConfidentialVM') ? managedDiskSecurityProfile : null)
+        }
+      }
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: resourceId('Microsoft.Network/networkInterfaces', '${vmName}-nic')
         }
       ]
-      enableAcceleratedNetworking: enableAcceleratedNetworking
-      networkSecurityGroup: (empty(networkSecurityGroupId) ? json('null') : json('{"id": "${nsgId}"}'))
     }
-  }
-
-resource virtualMachine'Microsoft.Compute/virtualMachines@2022-11-01' = {
-    name: vmName
-    location: location
-    extendedLocation: (empty(extendedLocation) ? null : extendedLocation)
-    tags: virtualMachineTags
-    identity: vmIdentity
-    properties: {
-      hardwareProfile: {
-        vmSize: vmSize
-      }
-      availabilitySet: ((availabilityOption == 'AvailabilitySet') ? vmAvailabilitySetResourceId : json('null'))
-      osProfile: {
-        computerName: vmName
-        adminUsername: adminUsername
-        adminPassword: adminPassword
-      }
-      securityProfile: (((securityType == 'TrustedLaunch') || (securityType == 'ConfidentialVM'))
-        ? securityProfile
-        : json('null'))
-      storageProfile: {
-        imageReference: {
-          publisher: publisher
-          offer: offer
-          sku: sku
-          version: (empty(vmGalleryImageVersion) ? 'latest' : vmGalleryImageVersion)
-        }
-        osDisk: {
-          createOption: 'FromImage'
-          diskSizeGB: ((rdshVmDiskSizeGB == 0) ? json('null') : rdshVmDiskSizeGB)
-          managedDisk: {
-            storageAccountType: storageAccountType
-            securityProfile: ((securityType == 'ConfidentialVM') ? managedDiskSecurityProfile : json('null'))
-          }
-        }
-      }
-      networkProfile: {
-        networkInterfaces: [
-          {
-            id: resourceId('Microsoft.Network/networkInterfaces', '${vmName}-nic')
-          }
-        ]
-      }
-      diagnosticsProfile: {
-        bootDiagnostics: bootDiagnostics
-      }
-      additionalCapabilities: {
-        hibernationEnabled: rdshHibernate
-      }
-      licenseType: 'Windows_Client'
+    diagnosticsProfile: {
+      bootDiagnostics: bootDiagnostics
     }
+    additionalCapabilities: {
+      hibernationEnabled: rdshHibernate
+    }
+    licenseType: 'Windows_Client'
   }
+}
 
 resource guestAttestation 'Microsoft.Compute/virtualMachines/extensions@2018-10-01' = if (integrityMonitoring) {
-    name: '${vmName}/GuestAttestation'
-    location: location
-    properties: {
-      publisher: 'Microsoft.Azure.Security.WindowsAttestation'
-      type: 'GuestAttestation'
-      typeHandlerVersion: '1.0'
-      autoUpgradeMinorVersion: true
-      settings: {
-        AttestationConfig: {
-          MaaSettings: {
-            maaEndpoint: ''
-            maaTenantName: 'GuestAttestation'
-          }
-          AscSettings: {
-            ascReportingEndpoint: ''
-            ascReportingFrequency: ''
-          }
-          useCustomToken: 'false'
-          disableAlerts: 'false'
+  name: 'GuestAttestation'
+  parent: virtualMachine
+  location: location
+  properties: {
+    publisher: 'Microsoft.Azure.Security.WindowsAttestation'
+    type: 'GuestAttestation'
+    typeHandlerVersion: '1.0'
+    autoUpgradeMinorVersion: true
+    settings: {
+      AttestationConfig: {
+        MaaSettings: {
+          maaEndpoint: ''
+          maaTenantName: 'GuestAttestation'
         }
+        AscSettings: {
+          ascReportingEndpoint: ''
+          ascReportingFrequency: ''
+        }
+        useCustomToken: 'false'
+        disableAlerts: 'false'
       }
     }
-    dependsOn: [
-      virtualMachine
-    ]
   }
+}
 
-
-resource AVDAgent 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
-    name: '${vmName}/Microsoft.PowerShell.DSC'
-    location: location
-    properties: {
-      publisher: 'Microsoft.Powershell'
-      type: 'DSC'
-      typeHandlerVersion: '2.73'
-      autoUpgradeMinorVersion: true
-      settings: {
-        modulesUrl: artifactsLocation
-        configurationFunction: 'Configuration.ps1\\AddSessionHost'
-        properties: {
-          hostPoolName: hostpoolName
-          registrationInfoTokenCredential: {
-            UserName: 'PLACEHOLDER_DO_NOT_USE'
-            Password: 'PrivateSettingsRef:RegistrationInfoToken'
-          }
-          aadJoin: aadJoin
-          UseAgentDownloadEndpoint: true
-          aadJoinPreview: (contains(systemData, 'aadJoinPreview') && systemData.aadJoinPreview)
-          mdmId: (intune ? '0000000a-0000-0000-c000-000000000000' : '')
-          sessionHostConfigurationLastUpdateTime: SessionHostConfigurationVersion
+resource AVDAgent 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = if (avdAgent)  {
+  name: 'Microsoft.PowerShell.DSC'
+  parent: virtualMachine
+  location: location
+  properties: {
+    publisher: 'Microsoft.Powershell'
+    type: 'DSC'
+    typeHandlerVersion: '2.73'
+    autoUpgradeMinorVersion: true
+    settings: {
+      modulesUrl: artifactsLocation
+      configurationFunction: 'Configuration.ps1\\AddSessionHost'
+      properties: {
+        hostPoolName: hostpoolName
+        registrationInfoTokenCredential: {
+          UserName: 'PLACEHOLDER_DO_NOT_USE'
+          Password: 'PrivateSettingsRef:RegistrationInfoToken'
         }
-      }
-      protectedSettings: {
-        Items: {
-          RegistrationInfoToken: hostpoolToken
-        }
+        aadJoin: aadJoin
+        UseAgentDownloadEndpoint: true
+        aadJoinPreview: (contains(systemData, 'aadJoinPreview') && systemData.aadJoinPreview)
+        mdmId: (intune ? '0000000a-0000-0000-c000-000000000000' : '')
+        sessionHostConfigurationLastUpdateTime: SessionHostConfigurationVersion
       }
     }
-    dependsOn: [
-      guestAttestation
-    ]
-  }
-
-resource aadLoginForWindows 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = 
-if (aadJoin && (contains(systemData, 'aadJoinPreview')
-    ? (!systemData.aadJoinPreview)
-    : bool('true'))) {
-    name: '${vmName}/AADLoginForWindows'
-    location: location
-    properties: {
-      publisher: 'Microsoft.Azure.ActiveDirectory'
-      type: 'AADLoginForWindows'
-      typeHandlerVersion: '2.0'
-      autoUpgradeMinorVersion: true
-      settings: (intune
-        ? {
-            mdmId: '0000000a-0000-0000-c000-000000000000'
-          }
-        : json('null'))
+    protectedSettings: {
+      Items: {
+        RegistrationInfoToken: hostpoolToken
+      }
     }
-    dependsOn: [
-      AVDAgent
-    ]
   }
+  dependsOn: [
+    guestAttestation
+  ]
+}
 
+resource aadLoginForWindows 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = if (aadJoin && (contains(
+    systemData,
+    'aadJoinPreview')
+  ? (!systemData.aadJoinPreview)
+  : true)) {
+  name: 'AADLoginForWindows'
+  parent: virtualMachine
+  location: location
+  properties: {
+    publisher: 'Microsoft.Azure.ActiveDirectory'
+    type: 'AADLoginForWindows'
+    typeHandlerVersion: '2.0'
+    autoUpgradeMinorVersion: true
+    settings: (intune
+      ? {
+          mdmId: '0000000a-0000-0000-c000-000000000000'
+        }
+      : null)
+  }
+  dependsOn: [
+    AVDAgent
+  ]
+}
 
 resource customScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2021-03-01' = if (!empty(customConfigurationScriptUrl)) {
-    name: '${vmName}/Microsoft.Compute.CustomScriptExtension'
-    location: location
-    properties: {
-      publisher: 'Microsoft.Compute'
-      type: 'CustomScriptExtension'
-      typeHandlerVersion: '1.10'
-      autoUpgradeMinorVersion: true
-      protectedSettings: {
-        fileUris: [
-          customConfigurationScriptUrl
-        ]
-        commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File ${powerShellScriptName}'
-      }
+  name: 'Microsoft.Compute.CustomScriptExtension'
+  parent: virtualMachine
+  location: location
+  properties: {
+    publisher: 'Microsoft.Compute'
+    type: 'CustomScriptExtension'
+    typeHandlerVersion: '1.10'
+    autoUpgradeMinorVersion: true
+    protectedSettings: {
+      fileUris: [
+        customConfigurationScriptUrl
+      ]
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File ${powerShellScriptName}'
     }
-    dependsOn: [
-      AVDAgent
-      aadLoginForWindows
-    ]
   }
-
+  dependsOn: [
+    AVDAgent
+    aadLoginForWindows
+  ]
+}
