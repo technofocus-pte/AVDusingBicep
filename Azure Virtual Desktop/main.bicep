@@ -50,6 +50,8 @@ param securityType string = 'Standard'
 
 param principalId string = 'principalId'
 
+param addPermissions bool = false
+
 module RG 'Modules/resourceGroup.bicep' = {
   name: '${resourceGroupName}-${date}'
   params: {
@@ -128,7 +130,7 @@ module vm 'Modules/vmModule.bicep' = {
 }
 
 
-module permissions 'Modules/azureVirtualDesktopPermissions.bicep' = {
+module permissions 'Modules/azureVirtualDesktopPermissions.bicep' = if (addPermissions) {
   dependsOn: [
     RG
   ]
