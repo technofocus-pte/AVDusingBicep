@@ -26,22 +26,22 @@ stages:
               cliOutputResults: true
               ignoreExitCode: true
 
-  #        - task: PublishTestResults@2
-  #          displayName: Publish Results
- #           inputs:
- #             testResultsFormat: "NUnit"
-#              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
-#            condition: always()
+          - task: PublishTestResults@2
+            displayName: Publish Results
+            inputs:
+              testResultsFormat: "NUnit"
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
+            condition: always()
 
-#          - task: AzureCLI@2
-#            displayName: Preview Bicep Changes
-#            inputs:
-#              azureSubscription: "Azure-labs(9bcdeb1b-b977-4738-b0d7-03e228e47ba4)"
-#              scriptType: "bash"
-#              scriptLocation: "inlineScript"
-#              inlineScript: |
-#                az --version
-#                az deployment sub what-if --location $(location) --template-file $(templateFile) --parameters $(parametersFile)
+          - task: AzureCLI@2
+            displayName: Preview Bicep Changes
+            inputs:
+              azureSubscription: "Azure-labs(9bcdeb1b-b977-4738-b0d7-03e228e47ba4)"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                az --version
+                az deployment sub what-if --location $(location) --template-file $(templateFile) --parameters $(parametersFile)
 
 #  - stage: deployBicep
 #    jobs:
