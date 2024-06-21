@@ -18,10 +18,13 @@ stages:
 
         steps:
           - task: RunARMTTKTests@1
+            displayName: Scan Bicep Files
             inputs:
              templatelocation: '$(System.DefaultWorkingDirectory)\*'
              resultLocation: '$(System.DefaultWorkingDirectory)'
              allTemplatesMain: false
+             cliOutputResults: true
+             ignoreExitCode: true
 
           - task: PublishTestResults@2
             displayName: Publish Results
