@@ -21,17 +21,17 @@ stages:
             displayName: Scan Bicep files
             inputs:
               templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
-              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults'
+              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\avdlab\deploymentresults'
               allTemplatesMain: false
               cliOutputResults: true
               ignoreExitCode: true
 
-#          - task: PublishTestResults@2
-#            displayName: Publish Results
-#            inputs:
-#              testResultsFormat: "NUnit"
-#              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
-#            condition: always()
+          - task: PublishTestResults@2
+            displayName: Publish Results
+            inputs:
+              testResultsFormat: "NUnit"
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
+            condition: always()
 
           - task: AzureCLI@2
             displayName: Preview Bicep Changes
