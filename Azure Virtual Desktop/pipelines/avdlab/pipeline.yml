@@ -21,7 +21,7 @@ stages:
             displayName: Scan Bicep files
             inputs:
               templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
-              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\testresults'
+              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\testresults.xml'
               allTemplatesMain: false
               cliOutputResults: true
               ignoreExitCode: true
