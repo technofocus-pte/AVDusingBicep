@@ -71,7 +71,7 @@ stages:
             timeoutInMinutes: 1440 ### task times out in 1 day
             inputs:
               azureSubscription: "Azure-labs(9bcdeb1b-b977-4738-b0d7-03e228e47ba4)"
-              scriptType: "bash"
+              scriptType: "ps"
               scriptLocation: "inlineScript"
               inlineScript: |
                 az deployment sub create --location $(location) --template-file $(templateFile) --parameters $(parametersFile)
