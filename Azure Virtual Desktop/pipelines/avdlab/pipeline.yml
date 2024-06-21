@@ -30,7 +30,7 @@ stages:
             displayName: Publish Results
             inputs:
               testResultsFormat: "NUnit"
-              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\testresults.xml'
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\*-armttk.xml'
             condition: always()
 
           - task: AzureCLI@2
