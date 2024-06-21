@@ -4,8 +4,8 @@ trigger: none
 
 variables:
   location: "eastus"
-  templateFile: "Azure Virtual Desktop/main.bicep"
-  parametersFile: "Azure Virtual Desktop/main.bicepparam"
+  templateFile: "Azure Virtual Desktop\\main.bicep"
+  parametersFile: "Azure Virtual Desktop\\main.bicepparam"
 
 pool: Default
 
