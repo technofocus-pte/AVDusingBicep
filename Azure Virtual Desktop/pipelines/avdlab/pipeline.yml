@@ -42,6 +42,7 @@ stages:
               inlineScript: |
                 az --version
                 az deployment sub what-if --location $(location) --template-file $(templateFile) --parameters $(parametersFile)
+              powerShellIgnoreLASTEXITCODE: true
 
   - stage: deployBicep
     jobs:
