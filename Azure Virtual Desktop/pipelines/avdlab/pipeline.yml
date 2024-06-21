@@ -47,7 +47,7 @@ stages:
     jobs:
       - job: waitForValidation
         displayName: Wait for external validation
-        pool: Default
+        pool: server
         timeoutInMinutes: 1440 ### job times out in 1 day
         steps:
           - task: ManualValidation@0
@@ -61,8 +61,7 @@ stages:
       - job: deployAzure
         displayName: deploy bicep to Azure
         timeoutInMinutes: 1440 ### task times out in 1 day
-        pool:
-          vmImage: "ubuntu-latest"
+        pool: Default
         dependsOn: [waitForValidation]
 
         steps:
