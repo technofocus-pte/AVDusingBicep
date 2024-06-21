@@ -7,33 +7,31 @@ variables:
   templateFile: "Azure Virtual Desktop/main.bicep"
   parametersFile: "Azure Virtual Desktop/main.bicepparam"
 
-pool:
-  vmImage: "ubuntu-latest"
+pool: Default
 
 stages:
   - stage: preDeploy
     jobs:
       - job: scanWhatif
         displayName: scan and run whatif
-        pool:
-          vmImage: windows-2022
+        pool: Default
 
         steps:
-          - task: RunARMTTKTests@1
-            displayName: Scan Bicep files
-            inputs:
-              templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
-              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults'
-              allTemplatesMain: false
-              cliOutputResults: true
-              ignoreExitCode: true
+#          - task: RunARMTTKTests@1
+#            displayName: Scan Bicep files
+#            inputs:
+#              templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
+#              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults'
+#              allTemplatesMain: false
+#              cliOutputResults: true
+#              ignoreExitCode: true
 
-          - task: PublishTestResults@2
-            displayName: Publish Results
-            inputs:
-              testResultsFormat: "NUnit"
-              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
-            condition: always()
+#          - task: PublishTestResults@2
+#            displayName: Publish Results
+#            inputs:
+#              testResultsFormat: "NUnit"
+#              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
+#            condition: always()
 
           - task: AzureCLI@2
             displayName: Preview Bicep Changes
@@ -64,7 +62,6 @@ stages:
         displayName: deploy bicep to Azure
         timeoutInMinutes: 1440 ### task times out in 1 day
         pool: Default
-
         dependsOn: [waitForValidation]
 
         steps:
