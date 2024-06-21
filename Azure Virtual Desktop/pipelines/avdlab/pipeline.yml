@@ -21,7 +21,7 @@ stages:
             displayName: Scan Bicep files
             inputs:
               templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
-              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults'
+              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\testresults.xml'
               allTemplatesMain: false
               cliOutputResults: true
               ignoreExitCode: true
@@ -30,7 +30,7 @@ stages:
             displayName: Publish Results
             inputs:
               testResultsFormat: "NUnit"
-              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\testresults.xml'
             condition: always()
 
           - task: AzureCLI@2
