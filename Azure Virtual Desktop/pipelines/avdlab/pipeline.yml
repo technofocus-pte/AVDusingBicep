@@ -36,9 +36,9 @@ stages:
           - task: AzureCLI@2
             displayName: Preview Bicep Changes
             inputs:
-              azureSubscription: "Azure-labs(9bcdeb1b-b977-4738-b0d7-03e228e47ba4)"
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
+              azureSubscription: 'Azure-labs(9bcdeb1b-b977-4738-b0d7-03e228e47ba4)'
+              scriptType: 'ps'
+              scriptLocation: 'inlineScript'
               inlineScript: |
                 az --version
                 az deployment sub what-if --location $(location) --template-file $(templateFile) --parameters $(parametersFile)
