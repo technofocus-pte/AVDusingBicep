@@ -17,14 +17,14 @@ stages:
         pool: Default
 
         steps:
-#          - task: RunARMTTKTests@1
-#            displayName: Scan Bicep files
-#            inputs:
-#              templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
-#              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults'
-#              allTemplatesMain: false
-#              cliOutputResults: true
-#              ignoreExitCode: true
+          - task: RunARMTTKTests@1
+            displayName: Scan Bicep files
+            inputs:
+              templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
+              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults'
+              allTemplatesMain: false
+              cliOutputResults: true
+              ignoreExitCode: true
 
 #          - task: PublishTestResults@2
 #            displayName: Publish Results
