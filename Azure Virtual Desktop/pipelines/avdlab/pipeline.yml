@@ -14,7 +14,7 @@ stages:
     jobs:
       - job: scanWhatif
         displayName: scan and run whatif
-        pool: server
+        pool: Default
 
         steps:
           - task: RunARMTTKTests@1
