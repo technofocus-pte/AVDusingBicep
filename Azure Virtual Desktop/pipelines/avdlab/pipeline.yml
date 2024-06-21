@@ -18,19 +18,16 @@ stages:
 
         steps:
           - task: RunARMTTKTests@1
-            displayName: Scan Bicep files
             inputs:
-              templatelocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
-              resultLocation: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\pipelines\avdlab\deploymentresults'
-              allTemplatesMain: false
-              cliOutputResults: true
-              ignoreExitCode: true
+             templatelocation: '$(System.DefaultWorkingDirectory)\*'
+             resultLocation: '$(System.DefaultWorkingDirectory)'
+             allTemplatesMain: false
 
           - task: PublishTestResults@2
             displayName: Publish Results
             inputs:
               testResultsFormat: "NUnit"
-              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\*-armttk.xml'
             condition: always()
 
           - task: AzureCLI@2
