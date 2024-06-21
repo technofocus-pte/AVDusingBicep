@@ -14,7 +14,7 @@ stages:
     jobs:
       - job: scanWhatif
         displayName: scan and run whatif
-        pool: Default
+        pool: server
 
         steps:
           - task: RunARMTTKTests@1
@@ -26,13 +26,13 @@ stages:
               cliOutputResults: true
               ignoreExitCode: true
 
-#          - task: PublishTestResults@2
-#            displayName: Publish Results
-#            inputs:
-#              testResultsFormat: "NUnit"
-#              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
-#            condition: always()
-#
+          - task: PublishTestResults@2
+            displayName: Publish Results
+            inputs:
+              testResultsFormat: "NUnit"
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\deploymentresults\*-armttk.xml'
+            condition: always()
+
           - task: AzureCLI@2
             displayName: Preview Bicep Changes
             inputs:
