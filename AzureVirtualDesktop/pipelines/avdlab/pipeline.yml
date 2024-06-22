@@ -4,8 +4,8 @@ trigger: none
 
 variables:
   location: "westus3"
-  templateFile: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
-  parametersFile: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicepparam'
+  templateFile: 'C:\agent\_work\1\s\Azure Virtual Desktop\main.bicep'
+  parametersFile: 'C:\agent\_work\1\s\Azure Virtual Desktop\main.bicepparam'
 
 pool: Default
 
