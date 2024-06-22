@@ -3,7 +3,7 @@ name: Deploy Bicep files $(Build.BuildId)
 trigger: none
 
 variables:
-  location: "eastus"
+  location: "westus3"
   templateFile: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicep'
   parametersFile: '$(System.DefaultWorkingDirectory)\Azure Virtual Desktop\main.bicepparam'
 
