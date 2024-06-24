@@ -6,6 +6,7 @@ variables:
   location: "westus3"
   templateFile: '$(System.DefaultWorkingDirectory)\AzureVirtualDesktop\main.bicep'
   parametersFile: '$(System.DefaultWorkingDirectory)\AzureVirtualDesktop\main.bicepparam'
+  deploymentName: 'azlabs0624'
 
 pool: Default
 
@@ -74,4 +75,4 @@ stages:
               scriptType: "ps"
               scriptLocation: "inlineScript"
               inlineScript: |
-                az deployment sub create --location $(location) --template-file $(templateFile) --parameters $(parametersFile)
+                az deployment sub create --location $(location) --template-file $(templateFile) --parameters $(parametersFile) --name $(deploymentName)
