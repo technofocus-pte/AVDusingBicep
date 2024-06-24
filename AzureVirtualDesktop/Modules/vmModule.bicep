@@ -99,7 +99,7 @@ param hostpoolName string
 @description('Domain to join')
 param domain string = ''
 
-param avdAgent bool = false
+param avdAgent bool = true
 
 @description('IMPORTANT: You can use this parameter for the test purpose only as AAD Join is public preview. True if AAD Join, false if AD join')
 param aadJoin bool = true
