@@ -4,8 +4,8 @@ trigger: none
 
 variables:
   location: "westus3"
-  templateFile: '$(System.serverWorkingDirectory)\AzureVirtualDesktop\main.bicep'
-  parametersFile: '$(System.serverWorkingDirectory)\AzureVirtualDesktop\main.bicepparam'
+  templateFile: '$(System.DefaultWorkingDirectory)\AzureVirtualDesktop\main.bicep'
+  parametersFile: '$(System.DefaultWorkingDirectory)\AzureVirtualDesktop\main.bicepparam'
   deploymentName: 'azlabs0624'
 
 pool: server
@@ -21,8 +21,8 @@ stages:
           - task: RunARMTTKTests@1
             displayName: Scan Bicep Files
             inputs:
-             templatelocation: '$(System.serverWorkingDirectory)\*'
-             resultLocation: '$(System.serverWorkingDirectory)'
+             templatelocation: '$(System.DefaultWorkingDirectory)\*'
+             resultLocation: '$(System.DefaultWorkingDirectory)'
              allTemplatesMain: false
              cliOutputResults: true
              ignoreExitCode: true
@@ -31,7 +31,7 @@ stages:
             displayName: Publish Results
             inputs:
               testResultsFormat: "NUnit"
-              testResultsFiles: '$(System.serverWorkingDirectory)\*-armttk.xml'
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\*-armttk.xml'
             condition: always()
 
           - task: AzureCLI@2
