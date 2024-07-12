@@ -8,14 +8,14 @@ variables:
   parametersFile: '$(System.DefaultWorkingDirectory)\AzureVirtualDesktop\main.bicepparam'
   deploymentName: 'azlabs0624'
 
-pool: server
+pool: Default
 
 stages:
   - stage: preDeploy
     jobs:
       - job: scanWhatif
         displayName: scan and run whatif
-        pool: server
+        pool: Default
 
         steps:
           - task: RunARMTTKTests@1
@@ -63,7 +63,7 @@ stages:
       - job: deployAzure
         displayName: deploy bicep to Azure
         timeoutInMinutes: 1440 ### task times out in 1 day
-        pool: server
+        pool: Default
         dependsOn: [waitForValidation]
 
         steps:
