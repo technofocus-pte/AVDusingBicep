@@ -1,10 +1,10 @@
 @description('Username for the Virtual Machine.')
-param adminUsername string = 'azadmin'
+param adminUsername string = 'avdadmin'
 
 @description('Password for the Virtual Machine.')
 @minLength(12)
 @secure()
-param adminPassword string = '123!@#ABCabc'
+param adminPassword string = 'P@55w.rd1234'
 
 param offer string = 'windows-10'
 
