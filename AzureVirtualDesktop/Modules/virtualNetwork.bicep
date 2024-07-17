@@ -2,7 +2,7 @@ param location string = 'westus'
 
 param tags object 
 
-param virtualNetworkName string = 'vnet-avd-prd-wus'
+param virtualNetworkName string = 'vnet-avd-iac-wus'
 
 param vnetCIDR string = '10.0.0.0/16'
 
