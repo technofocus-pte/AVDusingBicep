@@ -7,19 +7,19 @@ param tags = {
 
 param location = 'WestUs'
 
-param resourceGroupName = 'rg-avdlab-prd-wus'
+param resourceGroupName = 'rg-avd-iac-wus'
 
 //hostpool Params
-param hostPoolName = 'hp-avdlab-prd-wus'
+param hostPoolName = 'hp-avd-iac-wus'
 
 // applicationGroup Params
-param applicationGroupName = 'ag-avdlab-prd-wus'
+param applicationGroupName = 'ag-avd-iac-wus'
 
 //Workspace Params 
-param workspaceName = 'ws-avdlab-prd-wus'
+param workspaceName = 'ws-avd-iac-wus'
 
 // Virtual Network Parameters
-param virtualNetworkName = 'vnet-avdlab-prd-wus'
+param virtualNetworkName = 'vnet-avd-iac-wus'
 
 param vnetCIDR = '10.0.0.0/20'
 
@@ -39,7 +39,7 @@ param OSVersion = 'win10-22h2-avd'
 
 param vmSize = 'Standard_B4ms'
 
-param vmName = 'vmavdprd01'
+param vmName = 'vm-avd-iac-01'
 
 param securityType = 'Standard'
 
