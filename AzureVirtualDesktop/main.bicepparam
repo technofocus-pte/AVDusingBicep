@@ -2,24 +2,24 @@ using 'main.bicep'
 
 
 param tags = {
-  'deployed By': 'CyberCareerAcademy'
+  'deployed By': 'IAC AVD BootCamp'
 }
 
-param location = 'WestUs3'
+param location = 'WestUs'
 
-param resourceGroupName = 'rg-avdlab-prd-wus3'
+param resourceGroupName = 'rg-avdlab-prd-wus'
 
 //hostpool Params
-param hostPoolName = 'hp-avdlab-prd-wus3'
+param hostPoolName = 'hp-avdlab-prd-wus'
 
 // applicationGroup Params
-param applicationGroupName = 'ag-avdlab-prd-wus3'
+param applicationGroupName = 'ag-avdlab-prd-wus'
 
 //Workspace Params 
-param workspaceName = 'ws-avdlab-prd-wus3'
+param workspaceName = 'ws-avdlab-prd-wus'
 
 // Virtual Network Parameters
-param virtualNetworkName = 'vnet-avdlab-prd-wus3'
+param virtualNetworkName = 'vnet-avdlab-prd-wus'
 
 param vnetCIDR = '10.0.0.0/20'
 
@@ -31,9 +31,9 @@ param subnets = [
 ]
 
 // Virtual Machine params
-param adminUsername = 'azadmin'
+param adminUsername = 'avdadmin'
 
-param adminPassword  = '123!@#ABCabc'
+param adminPassword  = 'P@55w.rd1234'
 
 param OSVersion = 'win10-22h2-avd'
 
