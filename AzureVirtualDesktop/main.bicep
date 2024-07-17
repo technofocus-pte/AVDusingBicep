@@ -1,26 +1,26 @@
 targetScope = 'subscription'
 
 param tags object = {
-  'deployed By': 'IAC AVD BootCamp'
+  'deployed AVD by': 'IaC using Azure Bicep'
 }
 
 param date string = utcNow()
 
 param location string = 'WestUs'
 
-param resourceGroupName string = 'rg-avd-prd-wus'
+param resourceGroupName string = 'rg4-avd-iac-wus'
 
 //hostpool Params
-param hostPoolName string = 'hp-avd-prd-wus'
+param hostPoolName string = 'hp-avd-iac-wus'
 
 // applicationGroup Params
-param applicationGroupName string = 'ag-avd-prd-wus'
+param applicationGroupName string = 'ag-avd-iac-wus'
 
 //Workspace Params 
-param workspaceName string = 'ws-avd-prd-wus'
+param workspaceName string = 'ws-avd-iac-wus'
 
 // Virtual Network Parameters
-param virtualNetworkName string = 'vnet-avd-prd-wus'
+param virtualNetworkName string = 'vnet-avd-iac-wus'
 
 param vnetCIDR string = '10.0.0.0/16'
 
@@ -44,7 +44,7 @@ param OSVersion string = 'win10-22h2-avd'
 
 param vmSize string = 'Standard_B4ms'
 
-param vmName string = 'vm-avd-prd-01'
+param vmName string = 'vm-avd-iac-01'
 
 param securityType string = 'Standard'
 
