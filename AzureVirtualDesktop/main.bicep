@@ -1,26 +1,26 @@
 targetScope = 'subscription'
 
 param tags object = {
-  'deployed By': 'CyberCareerAcademy'
+  'deployed By': 'IAC AVD BootCamp'
 }
 
 param date string = utcNow()
 
-param location string = 'WestUs3'
+param location string = 'WestUs'
 
-param resourceGroupName string = 'rg-avd-prd-wus3'
+param resourceGroupName string = 'rg-avd-prd-wus'
 
 //hostpool Params
-param hostPoolName string = 'hp-avd-prd-wus3'
+param hostPoolName string = 'hp-avd-prd-wus'
 
 // applicationGroup Params
-param applicationGroupName string = 'ag-avd-prd-wus3'
+param applicationGroupName string = 'ag-avd-prd-wus'
 
 //Workspace Params 
-param workspaceName string = 'ws-avd-prd-wus3'
+param workspaceName string = 'ws-avd-prd-wus'
 
 // Virtual Network Parameters
-param virtualNetworkName string = 'vnet-avd-prd-wus3'
+param virtualNetworkName string = 'vnet-avd-prd-wus'
 
 param vnetCIDR string = '10.0.0.0/16'
 
@@ -36,9 +36,9 @@ param subnets array = [
 ]
 
 // Virtual Machine params
-param adminUsername string = 'azadmin'
+param adminUsername string = 'avdadmin'
 
-param adminPassword string = '123!@#ABCabc'
+param adminPassword string = 'P@55w.rd1234'
 
 param OSVersion string = 'win10-22h2-avd'
 
