@@ -6,11 +6,11 @@ param adminUsername string = 'avdadmin'
 @secure()
 param adminPassword string = 'P@55w.rd1234'
 
-param offer string = 'windows-10'
+param offer string = 'windows-11'
 
 param publisher string = 'microsoftwindowsdesktop'
 
-param sku string = 'win10-22h2-avd'
+param sku string = 'win11-23h2-avd'
 
 param version string = ''
 
