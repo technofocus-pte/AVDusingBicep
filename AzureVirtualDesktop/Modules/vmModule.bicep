@@ -16,7 +16,7 @@ param availabilitySetName string = ''
 param availabilityZones array = []
 
 @description('(Required when vmImageType = Gallery) Gallery image Offer.')
-param offer string = 'windows-10'
+param offer string = 'windows-11'
 
 @description('(Required when vmImageType = Gallery) Gallery image Publisher.')
 param publisher string = 'microsoftwindowsdesktop'
@@ -25,7 +25,7 @@ param publisher string = 'microsoftwindowsdesktop'
 param vmGalleryImageHasPlan bool = false
 
 @description('(Required when vmImageType = Gallery) Gallery image SKU.')
-param sku string = 'win10-22h2-avd'
+param sku string = 'win11-23h2-avd'
 
 @description('(Required when vmImageType = Gallery) Gallery image version.')
 param vmGalleryImageVersion string = ''
