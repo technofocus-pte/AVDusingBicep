@@ -35,7 +35,7 @@ param adminUsername = 'avdadmin'
 
 param adminPassword  = 'P@55w.rd1234'
 
-param OSVersion = 'win10-22h2-avd'
+param OSVersion = 'win11-23h2-avd'
 
 param vmSize = 'Standard_B4ms'
 
