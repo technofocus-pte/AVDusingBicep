@@ -44,4 +44,4 @@ param vmName = 'vm-avd-iac-01'
 param securityType = 'Standard'
 
 //Permissions Params
-param principalId = 'b38b577a-000a-4db2-85de-b30bf73a5fb2'
+param principalId = '3521d794-1a58-4a46-9b3b-70c41fa64be2'
